@@ -1,0 +1,42 @@
+[
+    {
+        "id": 1,
+        "name": "POLERA MANGA LARGA",
+        "price": 200,
+        "image": "img/dorman.png",
+        "description": "ROPA DE MUJER",
+        "qr": "img/QRpolera.png"
+    },
+    {
+        "id": 2,
+        "name": "ZAPATILLA NEGRA",
+        "price": 350,
+        "image": "img/zapatilla.png",
+        "description": "ROPA DE HOMBRE",
+        "qr": "img/QRzapatilla.png"
+    },
+    {
+        "id": 3,
+        "name": "SOBRERO MARRON",
+        "price": 150,
+        "image": "img/sombrero.jpg",
+        "description": "ROPA DE HOMBRE",
+        "qr": "img/SombreroQR.png"
+    },
+    {
+        "id": 4,
+        "name": "PALTALON NEGRO HOMBRE",
+        "price": 220,
+        "image": "img/paltalon.png",
+        "description": "ROPA DE HOMBRE",
+        "qr": "img/QRpaltalon.png"
+    },
+    {
+        "id": 5,
+        "name": "ZAPATILLA DEPORTIVA",
+        "price": 180,
+        "image": "img/deportiva.png",
+        "description": "ROPA DE HOMBRE",
+        "qr": "img/QRdeportiva.png"
+    }
+]

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Detail</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Estilos para el modal */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.4);
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 90%;
+        max-width: 600px; /* Aumenta el tamaño máximo del modal */
+        text-align: center;
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    /* Estilo para la imagen del QR dentro del modal */
+    #qrImage {
+        max-width: 100%; /* Para asegurarte de que se ajuste al ancho del modal */
+        width: 80%; /* Ajusta el tamaño de la imagen del QR aquí */
+        height: auto;
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">PRODUCT DETAIL</div>
+        <div class="detail">
+            <div class="image">
+                <img src="">
+            </div>
+            <div class="content">
+                <h1 class="name"></h1>
+                <div class="price"></div>
+                <div class="buttons">
+                    <button id="qrButton">QR</button>
+                    <button>Add To Cart 
+                        <span>
+                            <svg class="" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 15a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm0 0h8m-8 0-1-4m9 4a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-9-4h10l2-7H3m2 7L3 4m0 0-.792-3H1"/>
+                            </svg>
+                        </span>
+                    </button>
+                </div>
+                <div class="description"></div>
+            </div>
+        </div>
+
+        <div class="title">Similar product</div>
+        <div class="listProduct"></div>
+    </div>
+
+    <!-- Modal para mostrar el QR -->
+    <div id="qrModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <img id="qrImage" src="" alt="QR Code" style="max-width: 100%;">
+        </div>
+    </div>
+
+    <script>
+        let products = null;
+
+        // Fetch data from JSON file
+        fetch('products.json')
+            .then(response => response.json())
+            .then(data => {
+                products = data;
+                showDetail();
+            });
+
+        function showDetail(){
+            let detail = document.querySelector('.detail');
+            let listProduct = document.querySelector('.listProduct');
+            let productId = new URLSearchParams(window.location.search).get('id');
+            let thisProduct = products.filter(value => value.id == productId)[0];
+
+            if(!thisProduct){
+                window.location.href = "/";
+            }
+
+            detail.querySelector('.image img').src = thisProduct.image;
+            detail.querySelector('.name').innerText = thisProduct.name;
+            detail.querySelector('.price').innerText = '$' + thisProduct.price;
+            detail.querySelector('.description').innerText = thisProduct.description;
+
+            (products.filter(value => value.id != productId)).forEach(product => {
+                let newProduct = document.createElement('a');
+                newProduct.href = '/detail.html?id=' + product.id;
+                newProduct.classList.add('item');
+                newProduct.innerHTML = 
+                `<img src="${product.image}" alt="">
+                <h2>${product.name}</h2>
+                <div class="price">$${product.price}</div>`;
+                listProduct.appendChild(newProduct);
+            });
+
+            // Funcionalidad para mostrar el QR en el modal
+            const qrButton = document.getElementById('qrButton');
+            const qrModal = document.getElementById('qrModal');
+            const qrImage = document.getElementById('qrImage');
+            const closeModal = document.querySelector('.close');
+
+            // Asigna la imagen QR específica del producto
+            qrButton.addEventListener('click', () => {
+                qrImage.src = thisProduct.qr; // Asegúrate de que el JSON tenga el campo 'qr'
+                qrModal.style.display = 'block';
+            });
+
+            // Cierra el modal al hacer clic en la 'x'
+            closeModal.onclick = function() {
+                qrModal.style.display = 'none';
+            }
+
+            // Cierra el modal al hacer clic fuera de él
+            window.onclick = function(event) {
+                if (event.target == qrModal) {
+                    qrModal.style.display = 'none';
+                }
+            }
+        }
+    </script>
+</body>
+</html>
